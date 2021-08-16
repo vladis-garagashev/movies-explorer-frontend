@@ -1,0 +1,42 @@
+.profile-link {
+  margin-bottom: 48px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  opacity: 1;
+  transition: all .2s linear;
+}
+.profile-link:hover {
+  opacity: .8;
+}
+.profile-link_hidden {
+  display: none;
+}
+.profile-link__title {
+  margin: 0 17px 0 0;
+  color: #fff;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+}
+.profile-link__icon {
+  width: 11.5px;
+  height: 14px;
+  background-color: #313131;
+  border-radius: 3px;
+  padding: 8px 7.25px;
+}
+
+@media screen and (min-width: 767px) {
+  .profile-link {
+    margin-bottom: 92px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .profile-link {
+    margin-bottom: 0;
+  }
+}

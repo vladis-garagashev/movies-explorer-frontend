@@ -1,0 +1,20 @@
+@font-face {
+  src: url('./Inter-Regular.woff'), url('./Inter-Regular.woff2');
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  src: url('./Inter-Medium.woff'), url('./Inter-Medium.woff2');
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  src: url('./SuisseIntl-Regular.woff'), url('./SuisseIntl-Regular.woff2');
+  font-family: 'SuisseIntl';
+  font-style: normal;
+  font-weight: 400;
+}

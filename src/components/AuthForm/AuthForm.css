@@ -1,0 +1,126 @@
+.form {
+  margin-top: 50px;
+  width: 100%;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.form__link {
+  width: 38px;
+  height: 38px;
+}
+.form__heading {
+  margin: 0;
+  margin-top: 50px;
+  margin-bottom: 80px;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 29px;
+}
+.form__section {
+  width: 100%;
+  margin-bottom: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.form__section:last-of-type {
+  margin-bottom: 222px;
+}
+
+.form__label {
+  margin-bottom: 5px;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  color: #8B8B8B;
+}
+.form__input {
+  padding: 0;
+  padding-bottom: 10px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #fff;
+  border-bottom: 1px solid #424242;
+}
+.form__input:focus {
+  outline: none;
+  border-bottom-color:#4285F4;
+}
+.form__input_type_error {
+  color: #EE3465;
+}
+.form__input_error {
+  width: 100%;
+  color: #EE3465;
+  font-size: 12px;
+  line-height: 15px;
+  font-weight: 400;
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+
+  opacity: 1;
+  transition: opacity .2s;
+}
+.form__caption-container{
+  align-self: center;
+  margin-top: 14px;
+  display: grid;
+  grid-auto-flow: column;
+  column-gap: 7px;
+  align-items: center;
+}
+.form__caption-text {
+  margin: 0;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #8B8B8B;
+}
+.form__caption-link {
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #4285F4;
+  transition: all .2s linear;
+}
+.form__caption-link:hover {
+  opacity: .7;
+}
+
+@media screen and (min-width: 767px) {
+  .form {
+    margin-top: 232px;
+    align-items: start;
+  }
+  .form__heading {
+    margin-bottom: 40px;
+  }
+  .form__section:last-of-type {
+    margin-bottom: 124px;
+  }
+  .form__caption-container {
+    margin-top: 16px;
+    column-gap: 6px;
+  }
+  .form__caption-text {
+    font-size: 14px;
+    line-height: 17px;
+  }
+  .form__caption-link {
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .form {
+    margin-top: 70px;
+  }
+}

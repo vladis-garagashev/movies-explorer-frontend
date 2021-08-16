@@ -19,7 +19,6 @@ function SearchForm(props) {
               type="text"
               name="movies"
               placeholder="Фильм"
-              required={false}
             />
             <Button className="button button_type_seach" type="submit">Найти</Button>
           </div>

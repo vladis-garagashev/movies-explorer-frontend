@@ -16,7 +16,7 @@ function App() {
     name: 'Владислав',
     email: 'placeholder@mail.ru'
   });
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [loading, setLoading] = useState(false);
   const [formEditing, setFormEditing] = useState(false);
 

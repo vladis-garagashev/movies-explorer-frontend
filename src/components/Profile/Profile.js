@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFormValidation } from '../../hooks/useForm';
 import Button from '../Button/Button';
@@ -6,9 +6,16 @@ import Header from '../Header/Header';
 import Input from '../Input/Input';
 import './Profile.css'
 
-function Profile({ isEditing, handleFormEditing}) {
-  const { inputValues, handleChange } = useFormValidation();
+function Profile({ isEditing, handleFormEditing, currentUser}) {
+  const { inputValues, handleChange, resetFrom } = useFormValidation();
 
+  const disableInput = isEditing ? false : true;
+
+  useEffect(() => {
+    if (currentUser) {
+      resetFrom(currentUser, {}, true);
+    }
+  }, [currentUser, resetFrom]);
   //-----------------------------------
 
   // Обработчик сабмита формы
@@ -32,7 +39,7 @@ function Profile({ isEditing, handleFormEditing}) {
                 type="text"
                 name="name"
                 required={true}
-                disabled={false}
+                disabled={disableInput}
                 value={inputValues.name}
                 onChange={handleChange}
               />
@@ -45,7 +52,7 @@ function Profile({ isEditing, handleFormEditing}) {
                 type="email"
                 name="email"
                 required={true}
-                disabled={false}
+                disabled={disableInput}
                 value={inputValues.email}
                 onChange={handleChange}
               />

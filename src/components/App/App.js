@@ -12,6 +12,10 @@ import Profile from '../Profile/Profile';
 import PageNotFound from '../PageNotFound/PageNotFound';
 
 function App() {
+  const [currentUser, setCurrentUser] = useState({
+    name: 'Владислав',
+    email: 'placeholder@mail.ru'
+  });
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formEditing, setFormEditing] = useState(false);
@@ -62,7 +66,8 @@ function App() {
           <Route path="/profile">
             <Profile
               isEditing={formEditing}
-              handleFormEditing={handleFormEditing}/>
+              handleFormEditing={handleFormEditing}
+              currentUser={currentUser}/> {/* Временно */}
           </Route>
 
           <Route path="/sign-up">

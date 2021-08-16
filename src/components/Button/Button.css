@@ -1,0 +1,247 @@
+.button {
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  box-sizing: border-box;
+  opacity: 1;
+  transition: all .2s linear;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.button:hover {
+  opacity: .8;
+}
+
+/* -------Кнопка меню------- */
+.button_type_menu {
+  position: relative;
+  z-index: 2;
+  width: 40px;
+  height: 43px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.button_type_menu > span {
+  display: block;
+  position: relative;
+  background: #fff;
+  width: 22px;
+  height: 2.5px;
+  transition: 0.4s;
+}
+.button_type_menu > span::before,
+.button_type_menu > span::after {
+  content: "";
+  display: block;
+  position: absolute;
+  background: #fff;
+  width: 100%;
+  height: 2.5px;
+  transition: 0.4s;
+}
+.button_type_menu > span::after {
+  top: 9px;
+}
+.button_type_menu > span::before {
+  top: -9px;
+}
+.button_type_menu_opened {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+}
+.button_type_menu_opened > span {
+  background: transparent;
+}
+.button_type_menu_opened > span::before,
+.button_type_menu_opened > span::after {
+  top: 0;
+}.button_type_menu_opened > span::before {
+  transform: rotate(-45deg);
+}.button_type_menu_opened > span::after {
+  transform: rotate(45deg);
+}
+
+/* -------Зеленая кнопка------- */
+.button_type_green {
+  width: 72px;
+  height: 32px;
+  background: #3DDC84;
+  color: #000;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 16px;
+  border-radius: 3px;
+}
+
+/* -------Серая кнопка------- */
+.button_type_grey {
+  width: 82px;
+  height: 26px;
+  background: #303030;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 16px;
+}
+
+/* -------Синяя кнопка------- */
+.button_type_blue {
+  width: 100%;
+  height: 45px;
+  background: #4285F4;
+  border-radius: 3px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+/* -------Кнопка поиска------- */
+.button_type_seach {
+  width: 60px;
+  height: 34px;
+  background: #3456F3;
+  border-radius: 48px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* -------Кнопка загрузить еще------- */
+.button_type_load-more {
+  margin-top: 50px;
+  margin-bottom: 80px;
+  width: calc(100% - 20px);
+  max-width: 1140px;
+  height: 36px;
+  background: #2F2F2F;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+/* -------Кнопка сохранить------- */
+.button_type_save-movie {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 72px;
+  height: 21px;
+  background: #313131;
+  border-radius: 30px;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 9px;
+  transition: all .2s linear;
+}
+
+/* -------Кнопка сохраненый------- */
+.button_type_saved-movie {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 21px;
+  height: 21px;
+  background: url('../../images/saved__movie-icon.svg') center no-repeat;
+  background-size: contain;
+}
+
+/* -------Кнопка удалить------- */
+.button_type_delete-movie {
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 21px;
+  height: 21px;
+  background: url('../../images/delete-movie-icon.svg') center no-repeat;
+  background-size: contain;
+  transition: all .2s linear;
+}
+
+/* -------Кнопка синий текст------- */
+.button_type_blue-text {
+  margin-top: 284px;
+  color: #4285F4;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  transition: all .2s linear;
+}
+
+/* -------Кнопка белый текст------- */
+.button_type_white-text {
+  color: #fff;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+}
+
+/* ----------------------------------- */
+@media screen and (min-width: 767px) {
+  .button_type_menu_opened {
+    position: fixed;
+    top: 15px;
+    right: 30px;
+  }
+  .button_type_green {
+    font-size: 12px;
+  }
+  .button_type_grey {
+    width: 96px;
+    height: 36px;
+    font-size: 12px;
+  }
+  .button_type_load-more {
+    width: calc(100% - 60px);
+  }
+  .button_type_save-movie{
+    top: 14px;
+    right: 14px;
+  }
+  .button_type_saved-movie{
+    top: 14px;
+    right: 14px;
+  }
+  .button_type_delete-movie{
+    top: 14px;
+    right: 14px;
+  }
+  .button_type_blue {
+    font-size: 14px;
+    line-height: 17px;
+  }
+  .button_type_blue-text {
+    margin-top: 184px;
+    font-size: 14px;
+    line-height: 17px;
+  }
+  .button_type_white-text {
+    font-size: 13px;
+    line-height: 16px;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .button_type_menu {
+    display: none;
+  }
+  .button_type_load-more {
+    width: calc(100% - 140px);
+  }
+}
+@media screen and (min-width: 1200px) {
+  .button_type_load-more {
+    width: 100%;
+  }
+}

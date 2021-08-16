@@ -1,0 +1,135 @@
+.about {
+  padding: 70px 18px;
+  display: flex;
+  flex-direction: column;
+}
+.about__title {
+  width: 100%;
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.04em;
+  align-self: flex-start;
+}
+.about__title::after {
+  content: '';
+  margin-top: 28px;
+  display: block;
+  height: 1px;
+  background: #DADADA;
+}
+.about__table {
+  margin-top: 60px;
+  display: grid;
+  gap: 56px 0;
+}
+.about__table-section {
+  display: flex;
+  flex-direction: column;
+}
+.about__table-title {
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  letter-spacing: -0.04em;
+}
+.about__table-text {
+  margin: 0;
+  margin-top: 16px;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 16px;
+}
+.about__graph {
+  margin-top: 60px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 35% 1fr;
+}
+.about__graph-text {
+  margin: 0;
+  padding: 11px 0;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+  background: #303030;
+}
+.about__graph-title {
+  margin: 0;
+  margin-top: 10px;
+  color: #A0A0A0;
+  font-family: 'SuisseIntl';
+  font-weight: 500;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  text-align: center;
+}
+.about__graph-text_type_green {
+  background: #3DDC84;
+  color: #000;
+}
+
+@media screen and (min-width: 767px) {
+  .about {
+    padding: 90px 50px;
+  }
+  .about__title {
+    font-size: 22px;
+    line-height: 27px;
+  }
+  .about__title::after {
+    margin-top: 23px;
+  }
+  .about__table {
+    margin-top: 70px;
+    grid-auto-flow: column;
+    gap: 0 30px;
+  }
+  .about__table-title {
+    font-size: 20px;
+    line-height: 24px;
+  }
+  .about__table-text {
+    margin-top: 22px;
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .about__graph {
+    grid-template-columns: 20% 1fr;
+  }
+  .about__graph-text {
+    padding: 9px 0;
+    font-size: 14px;
+    line-height: 17px;
+  }
+  .about__graph-title {
+    margin-top: 14px;
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .about {
+    padding: 110px 50px;
+  }
+  .about__table {
+    gap: 0 40px;
+  }
+  .about__table-text {
+    margin-top: 26px;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .about__graph-title {
+    margin-top: 14px;
+  }
+}
+@media screen and (min-width: 1200px) {
+  .about {
+    padding: 110px 0;
+  }
+}

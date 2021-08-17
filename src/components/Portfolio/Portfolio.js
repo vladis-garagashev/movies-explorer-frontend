@@ -1,8 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import './Portfolio.css'
-import portofioItemIcon from '../../images/portfolio__item-icon.svg'
 
 function Portfolio() {
   return (
@@ -11,24 +9,24 @@ function Portfolio() {
 
         <ul className="portfolio__list">
           <li className="portfolio__item">
-            <Link className="portfolio__item-link" to="#" target="_blank">
+            <a className="portfolio__item-link" href="https://github.com/vladis-garagashev/how-to-learn" target="_blank" rel="noreferrer">
               <h4 className="portfolio__item-title">Статичный сайт</h4>
               <p className="portfolio__item-icon">↗</p>
-            </Link>
+            </a>
           </li>
 
           <li className="portfolio__item">
-            <Link className="portfolio__item-link" to="#" target="_blank">
+            <a className="portfolio__item-link" href="https://github.com/vladis-garagashev/russian-travel" target="_blank" rel="noreferrer">
               <h4 className="portfolio__item-title">Адаптивный сайт</h4>
               <p className="portfolio__item-icon">↗</p>
-            </Link>
+            </a>
           </li>
 
           <li className="portfolio__item">
-            <Link className="portfolio__item-link" to="#" target="_blank">
+            <a className="portfolio__item-link" href="https://github.com/vladis-garagashev/react-mesto-api-full" target="_blank" rel="noreferrer">
               <h4 className="portfolio__item-title">Одностраничное приложение</h4>
               <p className="portfolio__item-icon">↗</p>
-            </Link>
+            </a>
           </li>
         </ul>
       </div>

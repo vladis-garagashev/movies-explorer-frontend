@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import './AboutMe.css'
 import photo from '../../images/photo.jpg'
@@ -18,10 +17,10 @@ function AboutMe() {
 
         <ul className="about-me__links">
           <li className="about-me__item">
-            <Link className="about-me__item-link" to="#" target="_blank">Facebook</Link>
+            <a className="about-me__item-link" href="https://www.facebook.com/vladis.garagashev" target="_blank" rel="noreferrer">Facebook</a>
           </li>
           <li className="about-me__item">
-            <Link className="about-me__item-link" to="#" target="_blank">GitHub</Link>
+            <a className="about-me__item-link" href="https://github.com/vladis-garagashev" target="_blank" rel="noreferrer">GitHub</a>
             </li>
         </ul>
       </div>

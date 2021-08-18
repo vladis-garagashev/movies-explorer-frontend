@@ -3,28 +3,18 @@ import './MoviesCardList.css'
 import MoviesCard from '../MoviesCard/MoviesCard';
 import Button from '../Button/Button';
 
-function MoviesCardList({ saved }) {
+function MoviesCardList({ saved, movies }) {
   return (
     <section className="movies-cards">
+      {movies.length === 0 && (<p>Нет фильмов</p>)}
       <ul className="movies-cards__list">
-        {saved // Временно!
-        ? (
-          <>
-            <MoviesCard btnClassName="button button_type_delete-movie"/>
-            <MoviesCard btnClassName="button button_type_delete-movie"/>
-            <MoviesCard btnClassName="button button_type_delete-movie"/>
-            <MoviesCard btnClassName="button button_type_delete-movie"/>
-            <MoviesCard btnClassName="button button_type_delete-movie"/>
-          </>
-        ) : (
-          <>
-            <MoviesCard btnClassName="button button_type_saved-movie"/>
-            <MoviesCard btnClassName="button button_type_save-movie" btnTitle="Сохранить"/>
-            <MoviesCard btnClassName="button button_type_save-movie" btnTitle="Сохранить"/>
-            <MoviesCard btnClassName="button button_type_saved-movie"/>
-            <MoviesCard btnClassName="button button_type_save-movie" btnTitle="Сохранить"/>
-          </>
-        )}
+        {movies.map((movie) => (
+              <MoviesCard
+                key={movie.id}
+                movie={movie}
+                btnClassName="button button_type_delete-movie"
+              />
+        ))}
       </ul>
       {!saved && <Button className="button button_type_load-more" type="button">Ещё</Button>}
     </section>

@@ -1,12 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useFormValidation } from '../../hooks/useForm';
+
+import './Profile.css'
 import Button from '../Button/Button';
 import Header from '../Header/Header';
-import Input from '../Input/Input';
-import './Profile.css'
 
-function Profile({ isEditing, handleFormEditing, currentUser}) {
+function Profile({ isEditing, handleFormEditing, handleSignout}) {
+
+  const currentUser = useContext(CurrentUserContext);
   const { inputValues, handleChange, resetFrom } = useFormValidation();
 
   const disableInput = isEditing ? false : true;
@@ -34,11 +38,11 @@ function Profile({ isEditing, handleFormEditing, currentUser}) {
           <form className="profile__form">
             <section className="profile__form-section">
               <label htmlFor="name" className="profile__form-label">Имя</label>
-              <Input
+              <input
                 className="profile__form-input"
                 type="text"
                 name="name"
-                required={true}
+                required
                 disabled={disableInput}
                 value={inputValues.name}
                 onChange={handleChange}
@@ -47,11 +51,11 @@ function Profile({ isEditing, handleFormEditing, currentUser}) {
 
             <section className="profile__form-section">
               <label htmlFor="email" className="profile__form-label">Почта</label>
-              <Input
+              <input
                 className="profile__form-input"
                 type="email"
                 name="email"
-                required={true}
+                required
                 disabled={disableInput}
                 value={inputValues.email}
                 onChange={handleChange}
@@ -75,7 +79,9 @@ function Profile({ isEditing, handleFormEditing, currentUser}) {
                 >
                   Редактировать
                   </Button>
-                <Link className="profile__signout" to="/">Выйти из аккаунта</Link>
+                <Link className="profile__signout" to="/" onClick={handleSignout}>
+                  Выйти из аккаунта
+                </Link>
               </>
             )}
           </form>

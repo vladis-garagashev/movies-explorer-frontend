@@ -5,13 +5,13 @@ import Header from '../Header/Header';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import SearchForm from '../SearchForm/SearchForm';
 
-function SavedMovies() {
+function SavedMovies( { saved, movies } ) {
   return (
     <>
       <Header/>
       <main className="content">
         <SearchForm/>
-        <MoviesCardList saved={true}/> {/* Временно */}
+        <MoviesCardList saved={saved} movies={movies}/>
       </main>
       <Footer/>
     </>

@@ -124,6 +124,22 @@ function App() {
     }
   };
 
+
+  // Обработчики обновления данных пользователя
+  const handleUpdateUser = (formData) => {
+    setIsLoading(true);
+    mainApi
+      .editUserInfo(formData)
+      .then((newUserData) => {
+        setCurrentUser(newUserData);
+        handleFormEditing()
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   //-----------------------------------
   // Обработчик открытия и закрытия меню
   const handleMenuButtonClick = () => {
@@ -187,8 +203,9 @@ function App() {
               path="/profile"
               component={Profile}
               isEditing={formEditing}
+              onUpdateUser={handleUpdateUser}
+              onSignout={handleSignout}
               handleFormEditing={handleFormEditing}
-              handleSignout={handleSignout}
             />
 
             <Route path="/sign-up">

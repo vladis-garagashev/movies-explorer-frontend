@@ -7,9 +7,11 @@ import { useFormValidation } from '../../hooks/useForm';
 import './Profile.css'
 import Button from '../Button/Button';
 import Header from '../Header/Header';
+import { AppContext } from '../../contexts/AppContext';
 
-function Profile({ isEditing, handleFormEditing, handleSignout}) {
+function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing}) {
 
+  const value = useContext(AppContext)
   const currentUser = useContext(CurrentUserContext);
   const { inputValues, handleChange, resetFrom } = useFormValidation();
 
@@ -25,7 +27,8 @@ function Profile({ isEditing, handleFormEditing, handleSignout}) {
   // Обработчик сабмита формы
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    handleFormEditing()
+    onUpdateUser(inputValues)
+
   };
 
   //-----------------------------------
@@ -68,7 +71,7 @@ function Profile({ isEditing, handleFormEditing, handleSignout}) {
                 className="button button_type_blue"
                 onClick={handleSubmit}
               >
-                Сохранить
+                {value.isLoading ? "Сохранение..." : "Сохранить"}
               </Button>
             ) : (
               <>
@@ -79,7 +82,7 @@ function Profile({ isEditing, handleFormEditing, handleSignout}) {
                 >
                   Редактировать
                   </Button>
-                <Link className="profile__signout" to="/" onClick={handleSignout}>
+                <Link className="profile__signout" to="/" onClick={onSignout}>
                   Выйти из аккаунта
                 </Link>
               </>

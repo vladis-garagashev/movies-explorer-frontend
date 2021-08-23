@@ -21,7 +21,7 @@ function Navigation() {
           onClick={value.onMenuClick}>
             <span></span>
           </Button>
-          <div className={menuBackgroundClassName}></div>
+          <div className={menuBackgroundClassName} onClick={value.onMenuClick}></div>
             <div className={menuContainerClassName}>
             <ul className="menu__list">
               {value.mobileWidth && (

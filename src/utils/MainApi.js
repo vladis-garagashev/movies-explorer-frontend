@@ -15,6 +15,7 @@ class MainApi {
   register(email, password, name) {
     return fetch(`${this._adress}/signup`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -132,7 +133,7 @@ class MainApi {
 
 //Инстанцирование экземпляра класса Api
 const mainApi = new MainApi({
-  adress: 'http://localhost:5000',
+  adress: 'https://api.findyourmovies.nomoredomains.club',
 });
 
 export default mainApi;

@@ -15,6 +15,7 @@ import Profile from '../Profile/Profile';
 import PageNotFound from '../PageNotFound/PageNotFound';
 
 import mainApi from '../../utils/MainApi';
+import moviesApi from '../../utils/MoviesApi';
 
 function App() {
   const [currentUser, setCurrentUser] = useState();
@@ -34,10 +35,11 @@ function App() {
   // Проверяем есть ли токен
   useEffect(() => {
     checkToken();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    setMovies(JSON.parse(localStorage.getItem('movies')))
   }, [])
 
-  // Получаем карточки, если пользователь залогинен
+  // Получаем информацию и карточки пользователя
   useEffect(() => {
     if (loggedIn) {
       mainApi
@@ -54,7 +56,7 @@ function App() {
         })
         .catch((error) => console.log(error));
     }
-  }, []);
+  }, [loggedIn]);
 
   // Проверяем ширину экрана
   useEffect(() => {
@@ -90,11 +92,10 @@ function App() {
     mainApi
       .login(email, password)
       .then((userData) => {
-        console.log(userData)
-        localStorage.setItem('authorized', true)
+        localStorage.setItem('authorized', true);
         setCurrentUser(userData);
         setLoggedIn(true);
-        history.push('/movies');
+        history.push('/');
       })
       .catch(handleError)
       .finally(() => {
@@ -108,7 +109,7 @@ function App() {
       .signout()
       .then(() => {
         localStorage.removeItem('authorized');
-        history.push('/login');
+        history.push('/');
         setLoggedIn(false);
         setCurrentUser();
       })
@@ -120,7 +121,6 @@ function App() {
     const token = localStorage.getItem('authorized')
     if (token) {
       setLoggedIn(true);
-      history.push('/movies');
     }
   };
 
@@ -135,6 +135,20 @@ function App() {
     setFormEditing(!formEditing);
   }
 
+  const handleSearch = (searchQuery) => {
+    setIsLoading(true)
+    moviesApi
+    .getMovies()
+      .then((movies) => {
+        const searchResponce = movies.filter((movie) => {
+          return movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase());
+        })
+        localStorage.setItem('movies', JSON.stringify(searchResponce));
+        setMovies(searchResponce)
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setIsLoading(false));
+  }
   //-----------------------------------
 
   return (
@@ -159,6 +173,7 @@ function App() {
               component={Movies}
               saved={false}
               movies={movies}
+              handleSearch={handleSearch}
             />
 
             <ProtectedRoute

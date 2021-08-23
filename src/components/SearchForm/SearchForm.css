@@ -36,8 +36,9 @@
   line-height: 18px;
 }
 .search-form__input:focus {
-  outline: 1px solid #3456F3;
-  outline-offset: 10px;
+  outline: none ;
+  border: 1px solid #3456F3;
+  border-radius: 50px;
 }
 .search-form__input::placeholder {
   color: #8B8B8B;

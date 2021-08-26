@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import profileIcon from '../../images/profile__icon.svg'
 import './ProfileLink.css'
 

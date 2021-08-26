@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import {useMediaQuery} from '@react-hook/media-query';
 
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
@@ -89,13 +89,6 @@ function App() {
 
   //-----------------------------------
 
-  // Функция обработчик ошибки
-  const handleError = (err) => {
-    console.log(err);
-    setServerErrorMessage('Ошибка! ' + err.message);
-  };
-
-  //-----------------------------------
   // Функция регистрации пользователя
   const handleRegister = ({ email, password, name }) => {
     setIsLoading(true);
@@ -119,6 +112,7 @@ function App() {
   };
 
   //-----------------------------------
+
   // Функция авторизации пользователя
   const handleLogin = ({ email, password }) => {
     setIsLoading(true);
@@ -145,6 +139,7 @@ function App() {
   };
 
   //-----------------------------------
+
   // Функция деавторизации пользователя
   const handleSignout = () => {
     mainApi
@@ -156,10 +151,17 @@ function App() {
         setLoggedIn(false);
         setCurrentUser();
       })
-      .catch(handleError);
+      .catch((error) => {
+        if (error.status === 401) {
+          setServerErrorMessage('Произошла ошибка. Токен не передан или передан не в том формате.')
+        } else if (error.status === 500) {
+          setServerErrorMessage('На сервере произошла ошибка.')
+        }
+      });
   };
 
   //-----------------------------------
+
   // Функция проверки наличия токена
   const checkToken = () => {
     const token = localStorage.getItem('authorized')
@@ -169,6 +171,7 @@ function App() {
   };
 
   //-----------------------------------
+
   // Обработчики обновления данных пользователя
   const handleUpdateUser = (formData) => {
     setDisableInput(true)
@@ -195,6 +198,7 @@ function App() {
   };
 
   //-----------------------------------
+
   // Поиск фильмов
   const handleSearchAllMovies = (searchQuery) => {
     setIsLoading(true)
@@ -231,11 +235,13 @@ function App() {
       .catch((error) => {
         console.log(error)
         setMoviesNotFound(false);
-        setServerErrorMessage("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз");
+        setServerErrorMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
       })
       .finally(() => setIsLoading(false));
   };
+
   //-----------------------------------
+
   // Поиск среди сохраненных фильмов
   const handleSearckSavedMovies = (searchQuery) => {
     setDisableInput(true);
@@ -252,7 +258,7 @@ function App() {
       .catch((error) => {
         console.log(error)
         setMoviesNotFound(false);
-        setServerErrorMessage("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз");
+        setServerErrorMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
       })
       .finally(() => {
         setIsLoading(false);
@@ -260,7 +266,9 @@ function App() {
 
       });
   };
+
   //-----------------------------------
+
   // Обработчик сохранения фильма
   const handleSaveMovie = (movie) => {
     const savedMovie = savedMovies.find((savedMovie) => savedMovie.movieId.toString() === movie.movieId);
@@ -280,6 +288,7 @@ function App() {
           .catch((error) => console.log(error));
       };
   };
+
   //-----------------------------------
 
   // Функция удаления филмьа
@@ -299,12 +308,14 @@ function App() {
 
 
   //-----------------------------------
+
   // Обработчик открытия и закрытия меню
   const handleMenuButtonClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   //-----------------------------------
+
   // Обработчик изменения состояния компонента Profile
   const handleFormEditing = () => {
     setFormEditing(!formEditing);
@@ -312,11 +323,14 @@ function App() {
 
   //-----------------------------------
 
+  // Обработчик фильтрации фильмов по продолжительности
   const handleFilterMovies = () => {
     setIsShortMovies(!isShortMovies);
   }
 
   //-----------------------------------
+
+  // Обработчик клика по конпке Еще
   const handleMoreMoviesClick = () => {
     if (desktopWidth) {
       setMoviesPerPage(moviesPerPage + 3);
@@ -324,6 +338,7 @@ function App() {
       setMoviesPerPage(moviesPerPage + 2);
     };
   };
+  
   //-----------------------------------
 
   return (
@@ -354,7 +369,7 @@ function App() {
             </Route>
 
             <ProtectedRoute
-              path="/movies"
+              exact path="/movies"
               component={Movies}
               movies={movies}
               moviesPerPage={moviesPerPage}
@@ -363,6 +378,7 @@ function App() {
               moviesNotFound={moviesNotFound}
               serverErrorMessage={serverErrorMessage}
               onLoadMore={handleMoreMoviesClick}
+              checkToken={checkToken}
             />
 
             <ProtectedRoute
@@ -373,18 +389,20 @@ function App() {
               onBtnClick={handleDeleteMovie}
               moviesNotFound={moviesNotFound}
               serverErrorMessage={serverErrorMessage}
+              checkToken={checkToken}
             />
 
             <ProtectedRoute
-              path="/profile"
+              exact path="/profile"
               component={Profile}
               isEditing={formEditing}
               onUpdateUser={handleUpdateUser}
               onSignout={handleSignout}
               handleFormEditing={handleFormEditing}
+              checkToken={checkToken}
             />
 
-            <Route path="/sign-up">
+            <Route exact path="/sign-up">
               <Register handleRegister={handleRegister}/>
             </Route>
 
@@ -395,11 +413,8 @@ function App() {
             <ProtectedRoute
               path="*"
               component={PageNotFound}
+              checkToken={checkToken}
             />
-
-            <Route path="/">
-              {loggedIn ? <Redirect to="/movies" /> : <Redirect to="/" />}
-            </Route>
           </Switch>
         </AppContext.Provider>
       </CurrentUserContext.Provider>

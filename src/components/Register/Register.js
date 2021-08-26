@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFormValidation } from '../../hooks/useForm';
 
-import './Register.css'
+import './Register.css';
 import AuthForm from '../AuthForm/AuthForm';
 
 function Register({ handleRegister }) {
@@ -23,6 +23,7 @@ function Register({ handleRegister }) {
     };
 
     //-----------------------------------
+    
   return (
     <main className="content">
       <section className="register">

@@ -14,7 +14,7 @@ function SavedMovies( { movies, onBtnClick, handleSearch, moviesNotFound, server
   const renderMovies = isShortMovies ? shortMovies : movies;
 
   useEffect(() => {
-    setIsShortMovies(false)
+    setIsShortMovies(false);
   }, []);
 
   return (

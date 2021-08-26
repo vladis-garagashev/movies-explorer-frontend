@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
-import './SearchForm.css'
 
+import './SearchForm.css';
 import Button from '../Button/Button';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import { useFormValidation } from '../../hooks/useForm';
@@ -19,16 +19,16 @@ function SearchForm({ handleSearch }) {
   }, [resetFrom]);
 
   useEffect(() => {
-    setMoviesNotFound(false)
+    setMoviesNotFound(false);
     setServerErrorMessage("");
-  }, [setMoviesNotFound, setServerErrorMessage])
+  }, [setMoviesNotFound, setServerErrorMessage]);
 
   //-----------------------------------
 
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    handleSearch(inputValues.searchInput)
+    e.preventDefault();
+    handleSearch(inputValues.searchInput);
   };
 
   return (

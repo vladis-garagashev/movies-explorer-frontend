@@ -4,24 +4,24 @@ import { Link } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useFormValidation } from '../../hooks/useForm';
 
-import './Profile.css'
+import './Profile.css';
 import Button from '../Button/Button';
 import Header from '../Header/Header';
 import { AppContext } from '../../contexts/AppContext';
 
 function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing }) {
 
-  const { isLoading, disableInput, setDisableInput, serverErrorMessage, setServerErrorMessage } = useContext(AppContext)
+  const { isLoading, disableInput, setDisableInput, serverErrorMessage, setServerErrorMessage } = useContext(AppContext);
   const currentUser = useContext(CurrentUserContext);
   const { inputValues, handleChange, resetFrom, errors, isValid } = useFormValidation();
 
   useEffect(() => {
-    setServerErrorMessage('')
-  }, [])
+    setServerErrorMessage('');
+  }, []);
 
   useEffect(() => {
-    isEditing ? setDisableInput(false) : setDisableInput(true)
-  }, [isEditing])
+    isEditing ? setDisableInput(false) : setDisableInput(true);
+  }, [isEditing]);
 
   useEffect(() => {
     if (currentUser) {
@@ -33,8 +33,7 @@ function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing }) {
   // Обработчик сабмита формы
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    onUpdateUser(inputValues)
-
+    onUpdateUser(inputValues);
   };
 
   //-----------------------------------

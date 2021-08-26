@@ -1,17 +1,18 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { AppContext } from '../../contexts/AppContext';
 
 import './AuthForm.css'
 import Button from '../Button/Button';
 import Logo from '../Logo/Logo';
-import { AppContext } from '../../contexts/AppContext';
 
 function AuthForm({ heading, btnText, captionText, captionLinkText, redirectPath, children, isValid, onSubmit }) {
   const { serverErrorMessage, setServerErrorMessage } = useContext(AppContext);
 
   useEffect(() => {
     setServerErrorMessage('');
-  }, [])
+  }, []);
+  
   return (
     <form
       className="form"

@@ -51,6 +51,10 @@
 }
 .profile__form-input:focus {
   outline: none;
+  border-bottom: 1px solid #4285F4;
+}
+.profile__form-input_type_error {
+  color: #EE3465;
 }
 .profile__signout {
   text-decoration: none;

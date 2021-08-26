@@ -11,11 +11,13 @@ import { AppContext } from '../../contexts/AppContext';
 
 function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing}) {
 
-  const value = useContext(AppContext)
+  const { isLoading, disableInput, setDisableInput } = useContext(AppContext)
   const currentUser = useContext(CurrentUserContext);
   const { inputValues, handleChange, resetFrom } = useFormValidation();
 
-  const disableInput = isEditing ? false : true;
+  useEffect(() => {
+    isEditing ? setDisableInput(false) : setDisableInput(true)
+  }, [isEditing])
 
   useEffect(() => {
     if (currentUser) {
@@ -71,7 +73,7 @@ function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing}) {
                 className="button button_type_blue"
                 onClick={handleSubmit}
               >
-                {value.isLoading ? "Сохранение..." : "Сохранить"}
+                {isLoading ? "Сохранение..." : "Сохранить"}
               </Button>
             ) : (
               <>

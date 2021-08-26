@@ -1,47 +1,31 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { AppContext } from '../../contexts/AppContext';
 
 import './MoviesCardList.css'
 import MoviesCard from '../MoviesCard/MoviesCard';
-import Button from '../Button/Button';
 
-function MoviesCardList({ saved, movies }) {
-  const value = useContext(AppContext);
+function MoviesCardList({ movies, shortMovies, onBtnClick, moviesNotFound, serverErrorMessage, moviesPerPage }) {
+  const { isShortMovies } = useContext(AppContext);
 
 
-  const [numberOfMovies, setNumberOfMovies] = useState(12);
+  const allMovies = (moviesPerPage === undefined) ? movies : movies.filter((movie, index) => index < moviesPerPage && movie);
+  const renderMovies = isShortMovies ? shortMovies : allMovies;
 
-  const handleBtnClick = () => {
-    setNumberOfMovies(numberOfMovies + 3)
-  }
+  const captionText = moviesNotFound ? "Ничего не найдено" : serverErrorMessage;
 
   return (
     <section className="movies-cards">
+      <p className="movies-cards__caption">{captionText}</p>
       <ul className="movies-cards__list">
-        {  !saved
-        ? movies?.map((movie, index) => {
-
-          return index < numberOfMovies &&
+      {renderMovies?.map((movie) => (
           <MoviesCard
-            key={movie.id}
+            key={movie.movieId}
             movie={movie}
-            saved={saved}
-          />
-
-        })
-        : movies?.map((movie) => (
-          <MoviesCard
-            key={movie.id}
-            movie={movie}
-            saved={saved}
-          />))
-        }
+            onBtnClick={onBtnClick}
+          />))}
       </ul>
-      {(!saved && movies?.length > 0 && numberOfMovies <  movies?.length) && <Button className="button button_type_load-more" type="button" onClick={handleBtnClick}>Ещё</Button>}
     </section>
   );
 }
 
 export default MoviesCardList;
-
-// ? <p className="movies-cards__caption">Ничего не найдено</p>

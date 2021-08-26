@@ -9,8 +9,8 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Main from '../Main/Main';
 import Register from '../Register/Register';
 import Login from '../Login/Login';
-import Movies from '../Movies/Movies'
-import SavedMovies from '../SavedMovies/SavedMovies'
+import Movies from '../Movies/Movies';
+import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 import PageNotFound from '../PageNotFound/PageNotFound';
 
@@ -19,29 +19,42 @@ import moviesApi from '../../utils/MoviesApi';
 
 function App() {
   const [currentUser, setCurrentUser] = useState();
-  const [movies, setMovies] = useState([]);
-  const [savedMovies, setSavedMovies] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [formEditing, setFormEditing] = useState(false);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const [movies, setMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [moviesPerPage, setMoviesPerPage] = useState(5);
+  const [moviesNotFound, setMoviesNotFound] = useState(false);
+  const [isShortMovies, setIsShortMovies] = useState(false);
+  const [showMoreBtnVisible, setShowMoreBtnVisible] = useState(false);
+
+  const [serverErrorMessage, setServerErrorMessage] = useState('');
+
+  const [disableInput, setDisableInput] = useState(false)
+
+
   const history = useHistory();
-  const mobileWidth = useMediaQuery('(max-width: 1023px)');
+  const tabletWidth = useMediaQuery('(min-width: 767px)');
+  const desktopWidth = useMediaQuery('(min-width: 1023px)');
+  const imagesServerUrl = 'https://api.nomoreparties.co';
 
   //-----------------------------------
 
   // Проверяем есть ли токен
   useEffect(() => {
     checkToken();
-
-    setMovies(JSON.parse(localStorage.getItem('movies')))
   }, [])
 
   // Получаем информацию и карточки пользователя
   useEffect(() => {
     if (loggedIn) {
+      const movies = localStorage.getItem('movies')
+      if (movies) setMovies(JSON.parse(movies));
+
       mainApi
         .getUserInfo()
         .then((userData) => {
@@ -52,7 +65,13 @@ function App() {
         mainApi
         .getMovies()
         .then((data) => {
-          setSavedMovies(data);
+          const savedMovies = data.map((movie) => {
+            return {
+              ...movie,
+              saved: true
+            }
+          })
+          setSavedMovies(savedMovies);
         })
         .catch((error) => console.log(error));
     }
@@ -60,18 +79,23 @@ function App() {
 
   // Проверяем ширину экрана
   useEffect(() => {
-    if (!mobileWidth) {
+    if (desktopWidth) {
       setIsMenuOpen(false);
-    }
-  }, [mobileWidth]);
+      setMoviesPerPage(12);
+    } else if(tabletWidth) {
+      setMoviesPerPage(8)
+    };
+  }, [desktopWidth, tabletWidth]);
 
   //-----------------------------------
 
   // Функция обработчик ошибки
   const handleError = (err) => {
     console.log(err);
+    setServerErrorMessage('Ошибка! ' + err.message);
   };
 
+  //-----------------------------------
   // Функция регистрации пользователя
   const handleRegister = ({ email, password, name }) => {
     setIsLoading(true);
@@ -86,6 +110,7 @@ function App() {
       });
   };
 
+  //-----------------------------------
   // Функция авторизации пользователя
   const handleLogin = ({ email, password }) => {
     setIsLoading(true);
@@ -103,12 +128,14 @@ function App() {
       });
   };
 
+  //-----------------------------------
   // Функция деавторизации пользователя
   const handleSignout = () => {
     mainApi
       .signout()
       .then(() => {
         localStorage.removeItem('authorized');
+        localStorage.removeItem('movies');
         history.push('/');
         setLoggedIn(false);
         setCurrentUser();
@@ -116,6 +143,7 @@ function App() {
       .catch(handleError);
   };
 
+  //-----------------------------------
   // Функция проверки наличия токена
   const checkToken = () => {
     const token = localStorage.getItem('authorized')
@@ -124,9 +152,10 @@ function App() {
     }
   };
 
-
+  //-----------------------------------
   // Обработчики обновления данных пользователя
   const handleUpdateUser = (formData) => {
+    setDisableInput(true)
     setIsLoading(true);
     mainApi
       .editUserInfo(formData)
@@ -134,11 +163,116 @@ function App() {
         setCurrentUser(newUserData);
         handleFormEditing()
       })
-      .catch((error) => console.log(error))
+      .catch(handleError)
       .finally(() => {
         setIsLoading(false);
+        setDisableInput(false);
       });
   };
+
+  //-----------------------------------
+  // Поиск фильмов
+  const handleSearchAllMovies = (searchQuery) => {
+    setIsLoading(true)
+    moviesApi
+    .getMovies()
+      .then((movies) => {
+        // Форматируем данные
+        const formatedMovies = movies.map((movie) => {
+          return {
+            ...movie,
+            image: imagesServerUrl + movie.image.url,
+            trailer: movie.trailerLink,
+            thumbnail: imagesServerUrl + movie.image.formats.thumbnail.url,
+            movieId: movie.id.toString(),
+          }});
+
+        //Ищем фильмы по ключевому слову
+        const searchedMovies = formatedMovies.filter((movie) => {
+          return movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase())
+        });
+
+        //Проверяем есть ли сохраненные фильмы у пользователя
+        searchedMovies.forEach((movie) => {
+          if (savedMovies.find((savedMovie) => savedMovie.movieId.toString() === movie.movieId)) {
+            movie.saved = true;
+          } else movie.saved = false;
+        });
+        setMoviesNotFound(searchedMovies.length === 0);
+
+        // Добавляем фильмы с localStorage и state
+        localStorage.setItem('movies', JSON.stringify(searchedMovies));
+        setMovies(searchedMovies);
+      })
+      .catch((error) => {
+        console.log(error)
+        setMoviesNotFound(false);
+        setServerErrorMessage("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз");
+      })
+      .finally(() => setIsLoading(false));
+  };
+  //-----------------------------------
+  // Поиск среди сохраненных фильмов
+  const handleSearckSavedMovies = (searchQuery) => {
+    setDisableInput(true);
+    setIsLoading(true);
+    mainApi
+      .getMovies()
+      .then((movies) => {
+        const searchedMovies = movies.filter((movie) => {
+          return movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase())
+        });
+        setMoviesNotFound(searchedMovies.length === 0);
+        setSavedMovies(searchedMovies);
+      })
+      .catch((error) => {
+        console.log(error)
+        setMoviesNotFound(false);
+        setServerErrorMessage("Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз");
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setDisableInput(false);
+
+      });
+  };
+  //-----------------------------------
+  // Обработчик сохранения фильма
+  const handleSaveMovie = (movie) => {
+    const savedMovie = savedMovies.find((savedMovie) => savedMovie.movieId.toString() === movie.movieId);
+
+      if (savedMovie) {
+        handleDeleteMovie(savedMovie);
+      } else {
+        mainApi
+          .addMovie(movie)
+          .then((newMovie) => {
+            newMovie.saved = true;
+            setSavedMovies([newMovie, ...savedMovies]);
+            movie.saved = true;
+            setMovies(([...movies]));
+            localStorage.setItem('movies', JSON.stringify(movies));
+          })
+          .catch((error) => console.log(error));
+      };
+  };
+  //-----------------------------------
+
+  // Функция удаления филмьа
+  const handleDeleteMovie = (savedMovie) => {
+    const movie = movies.find((movie) => movie.movieId === savedMovie.movieId.toString());
+
+    mainApi
+      .deleteMovie(savedMovie._id)
+      .then(() => {
+        setSavedMovies((state) => state.filter((m) => m._id !== savedMovie._id));
+        movie.saved = false;
+        setMovies([...movies]);
+        localStorage.setItem('movies', JSON.stringify(movies));
+      })
+      .catch((error) => console.log(error));
+  };
+
 
   //-----------------------------------
   // Обработчик открытия и закрытия меню
@@ -146,25 +280,26 @@ function App() {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  //-----------------------------------
   // Обработчик изменения состояния компонента Profile
   const handleFormEditing = () => {
     setFormEditing(!formEditing);
   }
 
-  const handleSearch = (searchQuery) => {
-    setIsLoading(true)
-    moviesApi
-    .getMovies()
-      .then((movies) => {
-        const searchResponce = movies.filter((movie) => {
-          return movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase());
-        })
-        localStorage.setItem('movies', JSON.stringify(searchResponce));
-        setMovies(searchResponce)
-      })
-      .catch((error) => console.log(error))
-      .finally(() => setIsLoading(false));
+  //-----------------------------------
+
+  const handleFilterMovies = () => {
+    setIsShortMovies(!isShortMovies);
   }
+
+  //-----------------------------------
+  const handleMoreMoviesClick = () => {
+    if (desktopWidth) {
+      setMoviesPerPage(moviesPerPage + 3);
+    } else {
+      setMoviesPerPage(moviesPerPage + 2);
+    };
+  };
   //-----------------------------------
 
   return (
@@ -172,11 +307,20 @@ function App() {
       <CurrentUserContext.Provider value={currentUser}>
         <AppContext.Provider
           value={{
-            loggedIn: loggedIn,
-            isMenuOpen: isMenuOpen,
+            loggedIn,
+            isMenuOpen,
             onMenuClick: handleMenuButtonClick,
-            isLoading: isLoading,
-            mobileWidth: mobileWidth,
+            isLoading,
+            desktopWidth,
+            handleFilterMovies,
+            isShortMovies,
+            setIsShortMovies,
+            setMoviesNotFound,
+            setServerErrorMessage,
+            setShowMoreBtnVisible,
+            showMoreBtnVisible,
+            disableInput,
+            setDisableInput,
           }}
         >
           <Switch>
@@ -187,16 +331,23 @@ function App() {
             <ProtectedRoute
               path="/movies"
               component={Movies}
-              saved={false}
               movies={movies}
-              handleSearch={handleSearch}
+              moviesPerPage={moviesPerPage}
+              handleSearch={handleSearchAllMovies}
+              onBtnClick={handleSaveMovie}
+              moviesNotFound={moviesNotFound}
+              serverErrorMessage={serverErrorMessage}
+              onLoadMore={handleMoreMoviesClick}
             />
 
             <ProtectedRoute
               path="/saved-movies"
               component={SavedMovies}
-              saved={true}
               movies={savedMovies}
+              handleSearch={handleSearckSavedMovies}
+              onBtnClick={handleDeleteMovie}
+              moviesNotFound={moviesNotFound}
+              serverErrorMessage={serverErrorMessage}
             />
 
             <ProtectedRoute

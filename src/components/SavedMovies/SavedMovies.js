@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AppContext } from '../../contexts/AppContext';
 
 import Header from '../Header/Header';
@@ -7,16 +7,22 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import Footer from '../Footer/Footer';
 
-function SavedMovies( { saved, movies } ) {
-  const value = useContext(AppContext);
+function SavedMovies( { movies, onBtnClick, handleSearch, moviesNotFound, serverErrorMessage} ) {
+  const { IsLoading, isShortMovies, setIsShortMovies } = useContext(AppContext);
+
+  const shortMovies = movies.filter((m) => m.duration <= 40);
+  const renderMovies = isShortMovies ? shortMovies : movies;
+
+  useEffect(() => {
+    setIsShortMovies(false)
+  }, []);
 
   return (
     <>
       <Header/>
       <main className="content">
-        <SearchForm/>
-        {value.IsLoading ? <Preloader/> : <MoviesCardList saved={saved} movies={movies}/>}
-
+        <SearchForm handleSearch={handleSearch}/>
+        {IsLoading ? <Preloader/> : <MoviesCardList movies={renderMovies} shortMovies={shortMovies} onBtnClick={onBtnClick}  moviesNotFound={moviesNotFound} serverErrorMessage={serverErrorMessage}/>}
       </main>
       <Footer/>
     </>

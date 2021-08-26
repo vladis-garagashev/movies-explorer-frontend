@@ -8,7 +8,7 @@ import Navigation from '../Navigation/Navigation';
 import ProfileLink from '../ProfileLink/ProfileLink';
 
 function Header() {
-  const value = useContext(AppContext);
+  const { desktopWidth, loggedIn } = useContext(AppContext);
 
   return (
     <header className="header">
@@ -16,7 +16,7 @@ function Header() {
         <Logo/>
       </Link>
       <Navigation/>
-      {(!value.mobileWidth && value.loggedIn )&& (<ProfileLink/>)}
+      {(desktopWidth && loggedIn )&& (<ProfileLink/>)}
     </header>
   );
 }

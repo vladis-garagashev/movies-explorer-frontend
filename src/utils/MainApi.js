@@ -122,7 +122,7 @@ class MainApi {
 
   // Функция удаления карточки
   deleteMovie(id) {
-    return fetch(`${this._adress}/cards/${id}`, {
+    return fetch(`${this._adress}/movies/${id}`, {
       method: 'DELETE',
       credentials: 'include',
     }).then((res) => this._handleResponse(res));
@@ -133,7 +133,7 @@ class MainApi {
 
 //Инстанцирование экземпляра класса Api
 const mainApi = new MainApi({
-  adress: 'https://api.findyourmovies.nomoredomains.club',
+  adress: 'http://localhost:5000',
 });
 
 export default mainApi;

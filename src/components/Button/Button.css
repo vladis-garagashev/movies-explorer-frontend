@@ -16,6 +16,9 @@
 .button:hover {
   opacity: .8;
 }
+.button_type_hidden {
+  display: none;
+}
 
 /* -------Кнопка меню------- */
 .button_type_menu {
@@ -126,6 +129,7 @@
   font-weight: 500;
   font-size: 12px;
   line-height: 15px;
+  align-self: center;
 }
 
 /* -------Кнопка сохранить------- */
@@ -142,7 +146,7 @@
   font-weight: 400;
   font-size: 10px;
   line-height: 9px;
-  transition: all .2s linear;
+  transition: opacity .2s linear;
 }
 
 /* -------Кнопка сохраненый------- */
@@ -154,6 +158,7 @@
   height: 21px;
   background: url('../../images/saved__movie-icon.svg') center no-repeat;
   background-size: contain;
+  transition: opacity .2s linear;
 }
 
 /* -------Кнопка удалить------- */
@@ -167,7 +172,7 @@
   height: 21px;
   background: url('../../images/delete-movie-icon.svg') center no-repeat;
   background-size: contain;
-  transition: all .2s linear;
+  transition: opacity .2s linear;
 }
 
 /* -------Кнопка синий текст------- */

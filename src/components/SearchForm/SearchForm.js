@@ -1,11 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import './SearchForm.css'
 
 import Button from '../Button/Button';
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox';
 import { useFormValidation } from '../../hooks/useForm';
+import { AppContext } from '../../contexts/AppContext';
 
 function SearchForm({ handleSearch }) {
+  const {setMoviesNotFound, setServerErrorMessage, disableInput } = useContext(AppContext)
+  useEffect(() => {
+    setMoviesNotFound(false)
+    setServerErrorMessage("");
+  }, [setMoviesNotFound, setServerErrorMessage])
 
   const { inputValues, handleChange, resetFrom, errors, isValid } =
     useFormValidation();
@@ -36,6 +42,7 @@ function SearchForm({ handleSearch }) {
               placeholder="Фильм"
               value={inputValues.searchInput}
               onChange={handleChange}
+              disabled={disableInput}
             />
             <Button className="button button_type_seach" type="submit">Найти</Button>
           </div>

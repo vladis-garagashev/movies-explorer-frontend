@@ -9,11 +9,15 @@ import Button from '../Button/Button';
 import Header from '../Header/Header';
 import { AppContext } from '../../contexts/AppContext';
 
-function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing}) {
+function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing }) {
 
-  const { isLoading, disableInput, setDisableInput } = useContext(AppContext)
+  const { isLoading, disableInput, setDisableInput, serverErrorMessage, setServerErrorMessage } = useContext(AppContext)
   const currentUser = useContext(CurrentUserContext);
-  const { inputValues, handleChange, resetFrom } = useFormValidation();
+  const { inputValues, handleChange, resetFrom, errors, isValid } = useFormValidation();
+
+  useEffect(() => {
+    setServerErrorMessage('')
+  }, [])
 
   useEffect(() => {
     isEditing ? setDisableInput(false) : setDisableInput(true)
@@ -43,8 +47,9 @@ function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing}) {
           <form className="profile__form">
             <section className="profile__form-section">
               <label htmlFor="name" className="profile__form-label">Имя</label>
+              <span className="profile__form-input_error">{errors.name}</span>
               <input
-                className="profile__form-input"
+                className={`profile__form-input ${errors.name ? "profile__form-input_type_error" : ""}`}
                 type="text"
                 name="name"
                 required
@@ -56,8 +61,9 @@ function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing}) {
 
             <section className="profile__form-section">
               <label htmlFor="email" className="profile__form-label">Почта</label>
+              <span className="profile__form-input_error">{errors.email}</span>
               <input
-                className="profile__form-input"
+                className={`profile__form-input ${errors.email ? "profile__form-input_type_error" : ""}`}
                 type="email"
                 name="email"
                 required
@@ -66,12 +72,14 @@ function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing}) {
                 onChange={handleChange}
               />
             </section>
+            <p className="profile__error-message">{serverErrorMessage}</p>
             {isEditing
             ? (
               <Button
                 type="subbit"
                 className="button button_type_blue"
                 onClick={handleSubmit}
+                disabled={isValid ? false : true}
               >
                 {isLoading ? "Сохранение..." : "Сохранить"}
               </Button>

@@ -69,6 +69,7 @@ function Register({ handleRegister }) {
               className={`form__input ${errors.password ? "form__input_type_error" : ""}`}
               type="password"
               name="password"
+              minLength="6"
               value={inputValues.password}
               onChange={handleChange}
               required

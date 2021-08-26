@@ -7,20 +7,24 @@ import { useFormValidation } from '../../hooks/useForm';
 import { AppContext } from '../../contexts/AppContext';
 
 function SearchForm({ handleSearch }) {
-  const {setMoviesNotFound, setServerErrorMessage, disableInput } = useContext(AppContext)
+  const {setMoviesNotFound, setServerErrorMessage, disableInput, setDisableInput } = useContext(AppContext);
+  const { inputValues, handleChange, resetFrom, errors, isValid } = useFormValidation();
+
+  useEffect(() => {
+    setDisableInput(false);
+  }, [])
+  // Сброс полей формы
+  useEffect(() => {
+    resetFrom();
+  }, [resetFrom]);
+
   useEffect(() => {
     setMoviesNotFound(false)
     setServerErrorMessage("");
   }, [setMoviesNotFound, setServerErrorMessage])
 
-  const { inputValues, handleChange, resetFrom, errors, isValid } =
-    useFormValidation();
   //-----------------------------------
 
-  // Сброс полей формы
-  useEffect(() => {
-    resetFrom();
-  }, [resetFrom]);
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -33,6 +37,7 @@ function SearchForm({ handleSearch }) {
           className="search-form"
           method="GET"
           onSubmit={handleSubmit}
+          noValidate
         >
           <div className="search-form__main">
             <input
@@ -43,8 +48,10 @@ function SearchForm({ handleSearch }) {
               value={inputValues.searchInput}
               onChange={handleChange}
               disabled={disableInput}
+              required
             />
-            <Button className="button button_type_seach" type="submit">Найти</Button>
+            <p className="search-form__input_error">{errors.searchInput}</p>
+            <Button className="button button_type_seach" type="submit" disabled={isValid ? false : true}>Найти</Button>
           </div>
           <FilterCheckbox/>
         </form>

@@ -7,7 +7,7 @@ class MainApi {
 
   // Функция обработки ответа промиса
   _handleResponse = (res) =>
-    res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`);
+    res.ok ? res.json() : Promise.reject(res);
 
   //-----------------------------------
 

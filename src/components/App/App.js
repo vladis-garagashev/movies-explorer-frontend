@@ -104,7 +104,15 @@ function App() {
       .then(() => {
         history.push('/sign-in');
       })
-      .catch(handleError)
+      .catch((error) => {
+        if (error.status === 409) {
+          setServerErrorMessage('Пользователь с таким email уже существует.');
+        } else if (error.status === 400) {
+          setServerErrorMessage('При регистрации пользователя произошла ошибка.')
+        } else if (error.status === 500) {
+          setServerErrorMessage('На сервере произошла ошибка.')
+        }
+      })
       .finally(() => {
         setIsLoading(false);
       });
@@ -122,7 +130,15 @@ function App() {
         setLoggedIn(true);
         history.push('/');
       })
-      .catch(handleError)
+      .catch((error) => {
+        if (error.status === 400) {
+          setServerErrorMessage('Вы ввели неправильный логин или пароль.');
+        } else if (error.status === 401) {
+          setServerErrorMessage('При авторизации произошла ошибка. Токен не передан или передан не в том формате.')
+        } else if (error.status === 500) {
+          setServerErrorMessage('На сервере произошла ошибка.')
+        }
+      })
       .finally(() => {
         setIsLoading(false);
       });
@@ -163,7 +179,15 @@ function App() {
         setCurrentUser(newUserData);
         handleFormEditing()
       })
-      .catch(handleError)
+      .catch((error) => {
+        if (error.status === 409) {
+          setServerErrorMessage('Пользователь с таким email уже существует.');
+        } else if (error.status === 400) {
+          setServerErrorMessage('При обновлении профиля произошла ошибка.')
+        } else if (error.status === 500) {
+          setServerErrorMessage('На сервере произошла ошибка.')
+        }
+      })
       .finally(() => {
         setIsLoading(false);
         setDisableInput(false);
@@ -316,6 +340,7 @@ function App() {
             isShortMovies,
             setIsShortMovies,
             setMoviesNotFound,
+            serverErrorMessage,
             setServerErrorMessage,
             setShowMoreBtnVisible,
             showMoreBtnVisible,

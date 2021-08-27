@@ -11,7 +11,7 @@ function MoviesCard({ movie, onBtnClick }) {
     button
     ${movie?.owner === undefined
       ? (movie.saved ? "button_type_saved-movie" : "button_type_save-movie")
-      : (movie?.owner === currentUser._id ? "button_type_delete-movie" : "button_type_hidden")
+      : (movie?.owner === currentUser?._id ? "button_type_delete-movie" : "button_type_hidden")
     }`;
 
   const btnTitle = `${movie.saved ? "" : "Сохранить"}`;

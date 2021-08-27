@@ -12,7 +12,7 @@ function AuthForm({ heading, btnText, captionText, captionLinkText, redirectPath
   useEffect(() => {
     setServerErrorMessage('');
   }, []);
-  
+
   return (
     <form
       className="form"
@@ -28,7 +28,7 @@ function AuthForm({ heading, btnText, captionText, captionLinkText, redirectPath
       {children}
 
       <p className="form__error-message">{serverErrorMessage}</p>
-      <Button  className="button button_type_blue" type="submit">{btnText}</Button>
+      <Button  className="button button_type_blue" type="submit" disabled={isValid ? false : true}>{btnText}</Button>
       <div className="form__caption-container">
         <p className="form__caption-text">{captionText}</p>
         <Link className="form__caption-link" to={redirectPath}>{captionLinkText}</Link>

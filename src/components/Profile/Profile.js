@@ -11,7 +11,7 @@ import { AppContext } from '../../contexts/AppContext';
 
 function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing }) {
 
-  const { isLoading, disableInput, setDisableInput, serverErrorMessage, setServerErrorMessage } = useContext(AppContext);
+  const { isLoading, disableInput, setDisableInput, isSuccess, serverErrorMessage, setServerErrorMessage } = useContext(AppContext);
   const currentUser = useContext(CurrentUserContext);
   const { inputValues, handleChange, resetFrom, errors, isValid } = useFormValidation();
 
@@ -71,7 +71,7 @@ function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing }) {
                 onChange={handleChange}
               />
             </section>
-            <p className="profile__error-message">{serverErrorMessage}</p>
+           {isSuccess ? <p className="profile__succes-message"> Профиль обновлен.</p>  : <p className="profile__error-message">{serverErrorMessage}</p>}
             {isEditing
             ? (
               <Button

@@ -67,6 +67,15 @@
   line-height: 13px;
   color: #EE3465;
 }
+.profile__succes-message {
+  margin: 0;
+  margin-bottom: 20px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #4285F4;
+
+}
 .profile__error-message {
   margin: 0;
   margin-bottom: 20px;

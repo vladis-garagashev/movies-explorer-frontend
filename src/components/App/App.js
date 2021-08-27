@@ -32,6 +32,7 @@ function App() {
   const [isShortMovies, setIsShortMovies] = useState(false);
   const [showMoreBtnVisible, setShowMoreBtnVisible] = useState(false);
 
+  const [isSuccess, setSuccess] = useState(false);
   const [serverErrorMessage, setServerErrorMessage] = useState('');
 
   const [disableInput, setDisableInput] = useState(false)
@@ -122,7 +123,7 @@ function App() {
         localStorage.setItem('authorized', true);
         setCurrentUser(userData);
         setLoggedIn(true);
-        history.push('/');
+        history.push('/movies');
       })
       .catch((error) => {
         if (error.status === 400) {
@@ -179,10 +180,12 @@ function App() {
     mainApi
       .editUserInfo(formData)
       .then((newUserData) => {
+        setSuccess(true);
         setCurrentUser(newUserData);
         handleFormEditing()
       })
       .catch((error) => {
+        setSuccess(false);
         if (error.status === 409) {
           setServerErrorMessage('Пользователь с таким email уже существует.');
         } else if (error.status === 400) {
@@ -318,8 +321,13 @@ function App() {
 
   // Обработчик изменения состояния компонента Profile
   const handleFormEditing = () => {
-    setFormEditing(!formEditing);
-  }
+    if (formEditing) {
+      setFormEditing(false);
+    } else {
+      setSuccess(false);
+      setFormEditing(true);
+    };
+  };
 
   //-----------------------------------
 
@@ -338,7 +346,7 @@ function App() {
       setMoviesPerPage(moviesPerPage + 2);
     };
   };
-  
+
   //-----------------------------------
 
   return (
@@ -361,6 +369,7 @@ function App() {
             showMoreBtnVisible,
             disableInput,
             setDisableInput,
+            isSuccess,
           }}
         >
           <Switch>

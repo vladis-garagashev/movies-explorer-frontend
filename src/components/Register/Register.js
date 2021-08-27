@@ -1,29 +1,34 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useFormValidation } from '../../hooks/useForm';
+import { AppContext } from '../../contexts/AppContext';
 
 import './Register.css';
 import AuthForm from '../AuthForm/AuthForm';
 
 function Register({ handleRegister }) {
+  const { disableInput, setDisableInput } = useContext(AppContext);
   const { inputValues, handleChange, resetFrom, errors, isValid } =
     useFormValidation();
-    //-----------------------------------
+  //-----------------------------------
+  useEffect(() => {
+    setDisableInput(false);
+  }, [])
 
-    // Сброс полей формы
-    useEffect(() => {
-      resetFrom();
-    }, [resetFrom]);
+  // Сброс полей формы
+  useEffect(() => {
+    resetFrom();
+  }, [resetFrom]);
 
-    //-----------------------------------
+  //-----------------------------------
 
-    // Обработчик сабмита формы
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      handleRegister(inputValues);
-    };
+  // Обработчик сабмита формы
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleRegister(inputValues);
+  };
 
-    //-----------------------------------
-    
+  //-----------------------------------
+
   return (
     <main className="content">
       <section className="register">
@@ -47,6 +52,7 @@ function Register({ handleRegister }) {
               required
               value={inputValues.name}
               onChange={handleChange}
+              disabled={disableInput}
             />
             <span className="form__input_error" id="name-error">{errors.name}</span>
           </section>
@@ -60,6 +66,7 @@ function Register({ handleRegister }) {
               required
               value={inputValues.email}
               onChange={handleChange}
+              disabled={disableInput}
             />
             <span className="form__input_error" id="email-error">{errors.email}</span>
           </section>
@@ -73,6 +80,7 @@ function Register({ handleRegister }) {
               minLength="6"
               value={inputValues.password}
               onChange={handleChange}
+              disabled={disableInput}
               required
             />
             <span className="form__input_error" id="password-error">{errors.password}</span>

@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useFormValidation } from '../../hooks/useForm';
+import { AppContext } from '../../contexts/AppContext';
 
 import './Login.css'
 import AuthForm from '../AuthForm/AuthForm';
 
 function Login({ handleLogin }) {
-
+  const { disableInput, setDisableInput } = useContext(AppContext);
   const { inputValues, handleChange, resetFrom, errors, isValid } =
     useFormValidation();
   //-----------------------------------
+  useEffect(() => {
+    setDisableInput(false);
+  }, [])
 
   // Сброс полей формы
   useEffect(() => {
@@ -46,6 +50,7 @@ function Login({ handleLogin }) {
               required
               value={inputValues.email}
               onChange={handleChange}
+              disabled={disableInput}
             />
             <span className="form__input_error" id="email-error">{errors.email}</span>
           </section>
@@ -59,6 +64,7 @@ function Login({ handleLogin }) {
               required
               value={inputValues.password}
               onChange={handleChange}
+              disabled={disableInput}
             />
             <span className="form__input_error" id="password-error">{errors.password}</span>
           </section>

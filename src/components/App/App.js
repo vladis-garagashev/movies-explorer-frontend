@@ -92,6 +92,7 @@ function App() {
 
   // Функция регистрации пользователя
   const handleRegister = ({ email, password, name }) => {
+    setDisableInput(true);
     setIsLoading(true);
     mainApi
       .register(email, password, name)
@@ -112,6 +113,7 @@ function App() {
       })
       .finally(() => {
         setIsLoading(false);
+        setDisableInput(false);
       });
   };
 
@@ -119,6 +121,7 @@ function App() {
 
   // Функция авторизации пользователя
   const handleLogin = ({ email, password }) => {
+    setDisableInput(true);
     setIsLoading(true);
     mainApi
       .login(email, password)
@@ -139,6 +142,7 @@ function App() {
       })
       .finally(() => {
         setIsLoading(false);
+        setDisableInput(false);
       });
   };
 
@@ -212,6 +216,7 @@ function App() {
 
   // Поиск фильмов
   const handleSearchAllMovies = (searchQuery) => {
+    setDisableInput(true);
     setIsLoading(true);
     moviesApi
     .getMovies()
@@ -248,7 +253,10 @@ function App() {
         setMoviesNotFound(false);
         setServerErrorMessage('Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз');
       })
-      .finally(() => setIsLoading(false));
+      .finally(() => {
+        setIsLoading(false);
+        setDisableInput(true);
+      });
   };
 
   //-----------------------------------

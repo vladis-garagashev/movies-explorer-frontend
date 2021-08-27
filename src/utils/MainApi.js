@@ -1,7 +1,7 @@
 class MainApi {
   constructor({ adress }) {
     this._adress = adress;
-  }
+  };
 
   //-----------------------------------
 
@@ -59,12 +59,22 @@ class MainApi {
 
   //-----------------------------------
 
+  // Проверка токена
+  checkToken() {
+    return fetch(`${this._adress}/users/me`, {
+      method: 'GET',
+      credentials: 'include',
+    }).then((res) => this._handleResponse(res));
+  };
+
+  //-----------------------------------
+
   // Функция получения информации о пользователе
   getUserInfo() {
     return fetch(`${this._adress}/users/me`, {
       credentials: 'include',
     }).then((res) => this._handleResponse(res));
-  }
+  };
 
   //-----------------------------------
 
@@ -81,7 +91,7 @@ class MainApi {
         email: data.email,
       }),
     }).then((res) => this._handleResponse(res));
-  }
+  };
 
   //-----------------------------------
 
@@ -90,7 +100,7 @@ class MainApi {
     return fetch(`${this._adress}/movies`, {
       credentials: 'include',
     }).then((res) => this._handleResponse(res));
-  }
+  };
 
   //-----------------------------------
 
@@ -116,7 +126,7 @@ class MainApi {
         nameEN: data.nameEN,
       }),
     }).then((res) => this._handleResponse(res));
-  }
+  };
 
   //-----------------------------------
 
@@ -126,14 +136,14 @@ class MainApi {
       method: 'DELETE',
       credentials: 'include',
     }).then((res) => this._handleResponse(res));
-  }
-}
+  };
+};
 
 //-----------------------------------
 
 //Инстанцирование экземпляра класса Api
 const mainApi = new MainApi({
-  adress: 'https://api.findyourmovies.nomoredomains.club',
+  adress: 'http://localhost:5000',
 });
 
 export default mainApi;

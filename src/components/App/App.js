@@ -61,7 +61,7 @@ function App() {
         .then((userData) => {
           setCurrentUser(userData);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(`Ошибка! ${error.status}`));
 
         mainApi
         .getMovies()
@@ -95,8 +95,11 @@ function App() {
     setIsLoading(true);
     mainApi
       .register(email, password, name)
-      .then(() => {
-        history.push('/sign-in');
+      .then((userData) => {
+        localStorage.setItem('authorized', true);
+        setCurrentUser(userData);
+        setLoggedIn(true);
+        history.push('/movies');
       })
       .catch((error) => {
         if (error.status === 409) {
@@ -105,7 +108,7 @@ function App() {
           setServerErrorMessage('При регистрации пользователя произошла ошибка.')
         } else if (error.status === 500) {
           setServerErrorMessage('На сервере произошла ошибка.')
-        }
+        };
       })
       .finally(() => {
         setIsLoading(false);
@@ -132,7 +135,7 @@ function App() {
           setServerErrorMessage('При авторизации произошла ошибка. Токен не передан или передан не в том формате.')
         } else if (error.status === 500) {
           setServerErrorMessage('На сервере произошла ошибка.')
-        }
+        };
       })
       .finally(() => {
         setIsLoading(false);
@@ -157,7 +160,7 @@ function App() {
           setServerErrorMessage('Произошла ошибка. Токен не передан или передан не в том формате.')
         } else if (error.status === 500) {
           setServerErrorMessage('На сервере произошла ошибка.')
-        }
+        };
       });
   };
 
@@ -167,15 +170,20 @@ function App() {
   const checkToken = () => {
     const token = localStorage.getItem('authorized')
     if (token) {
-      setLoggedIn(true);
-    }
+      mainApi.checkToken()
+        .then((userData) => {
+          setCurrentUser(userData)
+          setLoggedIn(true);
+        })
+        .catch((error) => console.log(`Ошибка авторизации. ${error.status}`))
+    };
   };
 
   //-----------------------------------
 
   // Обработчики обновления данных пользователя
   const handleUpdateUser = (formData) => {
-    setDisableInput(true)
+    setDisableInput(true);
     setIsLoading(true);
     mainApi
       .editUserInfo(formData)
@@ -204,7 +212,7 @@ function App() {
 
   // Поиск фильмов
   const handleSearchAllMovies = (searchQuery) => {
-    setIsLoading(true)
+    setIsLoading(true);
     moviesApi
     .getMovies()
       .then((movies) => {
@@ -220,7 +228,7 @@ function App() {
 
         //Ищем фильмы по ключевому слову
         const searchedMovies = formatedMovies.filter((movie) => {
-          return movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase())
+          return movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase());
         });
 
         //Проверяем есть ли сохраненные фильмы у пользователя
@@ -253,7 +261,7 @@ function App() {
       .getMovies()
       .then((movies) => {
         const searchedMovies = movies.filter((movie) => {
-          return movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase())
+          return movie.nameRU.toLowerCase().includes(searchQuery.toLowerCase());
         });
         setMoviesNotFound(searchedMovies.length === 0);
         setSavedMovies(searchedMovies);
@@ -266,7 +274,6 @@ function App() {
       .finally(() => {
         setIsLoading(false);
         setDisableInput(false);
-
       });
   };
 

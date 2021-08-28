@@ -7,10 +7,10 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import Footer from '../Footer/Footer';
 
-function SavedMovies( { movies, onBtnClick, handleSearch, moviesNotFound, serverErrorMessage} ) {
+function SavedMovies( { movies, handleSearch, handleShortMovies, onBtnClick, moviesNotFound, serverErrorMessage} ) {
   const { IsLoading, isShortMovies, setIsShortMovies } = useContext(AppContext);
 
-  const shortMovies = movies.filter((m) => m.duration <= 40);
+  const shortMovies = handleShortMovies(movies);
   const renderMovies = isShortMovies ? shortMovies : movies;
 
   useEffect(() => {

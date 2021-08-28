@@ -14,6 +14,7 @@ import SavedMovies from '../SavedMovies/SavedMovies';
 import Profile from '../Profile/Profile';
 import PageNotFound from '../PageNotFound/PageNotFound';
 
+import * as constants from '../../config/constants';
 import mainApi from '../../utils/MainApi';
 import moviesApi from '../../utils/MoviesApi';
 
@@ -27,7 +28,7 @@ function App() {
 
   const [movies, setMovies] = useState([]);
   const [savedMovies, setSavedMovies] = useState([]);
-  const [moviesPerPage, setMoviesPerPage] = useState(5);
+  const [moviesPerPage, setMoviesPerPage] = useState(constants.moviesPerMobilePage);
   const [moviesNotFound, setMoviesNotFound] = useState(false);
   const [isShortMovies, setIsShortMovies] = useState(false);
   const [showMoreBtnVisible, setShowMoreBtnVisible] = useState(false);
@@ -39,8 +40,8 @@ function App() {
 
 
   const history = useHistory();
-  const tabletWidth = useMediaQuery('(min-width: 767px)');
-  const desktopWidth = useMediaQuery('(min-width: 1023px)');
+  const tabletWidth = useMediaQuery(`(min-width: ${constants.tabletWidth}px)`);
+  const desktopWidth = useMediaQuery(`(min-width: ${constants.desktopWidrh}px)`);
   const imagesServerUrl = 'https://api.nomoreparties.co';
 
   //-----------------------------------
@@ -80,12 +81,7 @@ function App() {
 
   // Проверяем ширину экрана
   useEffect(() => {
-    if (desktopWidth) {
-      setIsMenuOpen(false);
-      setMoviesPerPage(12);
-    } else if(tabletWidth) {
-      setMoviesPerPage(8)
-    };
+    handleMoviesPerPage()
   }, [desktopWidth, tabletWidth]);
 
   //-----------------------------------
@@ -247,6 +243,7 @@ function App() {
         // Добавляем фильмы с localStorage и state
         localStorage.setItem('movies', JSON.stringify(searchedMovies));
         setMovies(searchedMovies);
+        handleMoviesPerPage();
       })
       .catch((error) => {
         console.log(error)
@@ -349,16 +346,30 @@ function App() {
   // Обработчик фильтрации фильмов по продолжительности
   const handleFilterMovies = () => {
     setIsShortMovies(!isShortMovies);
-  }
+  };
+
+  const handleShortMovies = (movies) => movies.filter((movie) => movie.duration <= constants.shortFilmsDuration);
 
   //-----------------------------------
+
+  // Обработчик отображения количества фильмов
+  const handleMoviesPerPage = () => {
+    if (desktopWidth) {
+      setIsMenuOpen(false);
+      setMoviesPerPage(constants.moviesPerPageDesktop);
+    } else if(tabletWidth) {
+      setMoviesPerPage(constants.moviesPerPageTablet);
+    } else {
+      setMoviesPerPage(constants.moviesPerMobilePage);
+    };
+  };
 
   // Обработчик клика по конпке Еще
   const handleMoreMoviesClick = () => {
     if (desktopWidth) {
-      setMoviesPerPage(moviesPerPage + 3);
+      setMoviesPerPage(moviesPerPage + constants.showMoreForDesktop);
     } else {
-      setMoviesPerPage(moviesPerPage + 2);
+      setMoviesPerPage(moviesPerPage + constants.showMore);
     };
   };
 
@@ -398,6 +409,7 @@ function App() {
               movies={movies}
               moviesPerPage={moviesPerPage}
               handleSearch={handleSearchAllMovies}
+              handleShortMovies={handleShortMovies}
               onBtnClick={handleSaveMovie}
               moviesNotFound={moviesNotFound}
               serverErrorMessage={serverErrorMessage}
@@ -410,6 +422,7 @@ function App() {
               component={SavedMovies}
               movies={savedMovies}
               handleSearch={handleSearckSavedMovies}
+              handleShortMovies={handleShortMovies}
               onBtnClick={handleDeleteMovie}
               moviesNotFound={moviesNotFound}
               serverErrorMessage={serverErrorMessage}

@@ -9,7 +9,8 @@ function MoviesCardList({ movies, shortMovies, onBtnClick, moviesNotFound, serve
 
 
   const allMovies = (moviesPerPage === undefined) ? movies : movies.filter((movie, index) => index < moviesPerPage && movie);
-  const renderMovies = isShortMovies ? shortMovies : allMovies;
+  const allShortMovies = (moviesPerPage === undefined) ? shortMovies : shortMovies.filter((movie, index) => index < moviesPerPage && movie);
+  const renderMovies = isShortMovies ? allShortMovies : allMovies;
 
   const captionText = moviesNotFound ? "Ничего не найдено" : serverErrorMessage;
 

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { AppContext } from '../../contexts/AppContext';
 
+import { shortFilmsDuration } from '../../config/constants';
 import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
@@ -12,27 +13,30 @@ function Movies({
   movies,
   moviesPerPage,
   handleSearch,
+  handleShortMovies,
   onBtnClick,
   moviesNotFound,
   serverErrorMessage,
   onLoadMore
 }) {
-  const { isLoading, showMoreBtnVisible, setShowMoreBtnVisible, isShortMovies, setIsShortMovies} = useContext(AppContext);
+  const { isLoading, showMoreBtnVisible, setShowMoreBtnVisible, isShortMovies, setIsShortMovies } = useContext(AppContext);
 
-  const shortMovies = movies.filter((m) => m.duration <= 40);
+  const shortMovies = handleShortMovies(movies)
   const renderMovies = isShortMovies ? shortMovies : movies;
 
   useEffect(() => {
-    setIsShortMovies(false)
+    setIsShortMovies(false);
   }, [])
 
   useEffect(() => {
-    if(renderMovies.length > 0 && moviesPerPage < renderMovies.length) {
-      setShowMoreBtnVisible(true);
-    } else {
+    if(renderMovies.length > 0 && renderMovies.length <= moviesPerPage) {
       setShowMoreBtnVisible(false)
+    } else {
+      setShowMoreBtnVisible(true)
     };
-  }, [renderMovies]);
+  }, [renderMovies, moviesPerPage]);
+
+
 
   return (
     <>

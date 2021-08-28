@@ -29,7 +29,7 @@ function Movies({
   }, [])
 
   useEffect(() => {
-    if(renderMovies.length > 0 && renderMovies.length <= moviesPerPage) {
+    if(renderMovies.length >= 0 && renderMovies.length <= moviesPerPage) {
       setShowMoreBtnVisible(false)
     } else {
       setShowMoreBtnVisible(true)

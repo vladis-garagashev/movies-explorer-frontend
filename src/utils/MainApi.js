@@ -143,7 +143,7 @@ class MainApi {
 
 //Инстанцирование экземпляра класса Api
 const mainApi = new MainApi({
-  adress: 'http://localhost:5000',
+  adress: 'https://api.findyourmovies.nomoredomains.club',
 });
 
 export default mainApi;

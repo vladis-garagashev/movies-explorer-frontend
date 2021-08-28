@@ -15,6 +15,8 @@ function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing }) {
   const currentUser = useContext(CurrentUserContext);
   const { inputValues, handleChange, resetFrom, errors, isValid } = useFormValidation();
 
+  const disabledBtn = (currentUser?.name === inputValues.name && currentUser?.email === inputValues.email) ? false : isValid;
+
   useEffect(() => {
     setServerErrorMessage('');
   }, []);
@@ -42,8 +44,13 @@ function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing }) {
       <Header/>
       <main className="content">
         <section className="profile">
-          <h2 className="profile__title">Привет, Владислав!</h2>
-          <form className="profile__form">
+          <h2 className="profile__title">Привет, {currentUser?.name}!</h2>
+          <form
+            className="profile__form"
+            method="POST"
+            onSubmit={handleSubmit}
+            noValidate
+          >
             <section className="profile__form-section">
               <label htmlFor="name" className="profile__form-label">Имя</label>
               <span className="profile__form-input_error">{errors.name}</span>
@@ -77,8 +84,7 @@ function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing }) {
               <Button
                 type="subbit"
                 className="button button_type_blue"
-                onClick={handleSubmit}
-                disabled={isValid ? false : true}
+                disabled={disabledBtn ? false : true}
               >
                 {isLoading ? "Сохранение..." : "Сохранить"}
               </Button>

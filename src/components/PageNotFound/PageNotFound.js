@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '../Button/Button';
-import './PageNotFound.css'
+import './PageNotFound.css';
 
 function PageNotFound() {
 
@@ -9,7 +9,7 @@ function PageNotFound() {
 
   const handleClick = () => {
     history.goBack()
-  }
+  };
 
   return (
     <div className="not-found">

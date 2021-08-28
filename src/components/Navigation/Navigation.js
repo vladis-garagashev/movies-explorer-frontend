@@ -7,24 +7,24 @@ import Button from '../Button/Button';
 import ProfileLink from '../ProfileLink/ProfileLink';
 
 function Navigation() {
-  const value = useContext(AppContext);
+  const { loggedIn, isMenuOpen, onMenuClick, desktopWidth} = useContext(AppContext);
 
-  const menuBtnClassName = `button button_type_menu ${value.isMenuOpen ? "button_type_menu_opened" : ""}`;
-  const menuBackgroundClassName = `menu__background ${value.isMenuOpen ? "menu__background_opened" : ""}`;
-  const menuContainerClassName = `menu__container ${value.isMenuOpen ? "menu__container_opened" : ""}`;
+  const menuBtnClassName = `button button_type_menu ${isMenuOpen ? "button_type_menu_opened" : ""}`;
+  const menuBackgroundClassName = `menu__background ${isMenuOpen ? "menu__background_opened" : ""}`;
+  const menuContainerClassName = `menu__container ${isMenuOpen ? "menu__container_opened" : ""}`;
 
   return (
     <nav className="menu">
-      {value.loggedIn ? (
+      {loggedIn ? (
         <>
           <Button className={menuBtnClassName}
-          onClick={value.onMenuClick}>
+          onClick={onMenuClick}>
             <span></span>
           </Button>
-          <div className={menuBackgroundClassName}></div>
+          <div className={menuBackgroundClassName} onClick={onMenuClick}></div>
             <div className={menuContainerClassName}>
             <ul className="menu__list">
-              {value.mobileWidth && (
+              {!desktopWidth && (
                 <li className="menu__item">
                   <NavLink className="menu__link" activeClassName="menu__link_active" exact to="/">
                     Главная
@@ -42,7 +42,7 @@ function Navigation() {
                 </NavLink>
               </li>
             </ul>
-              {value.mobileWidth && (<ProfileLink/>)}
+              {!desktopWidth && (<ProfileLink/>)}
          </div>
         </>
       ) : (

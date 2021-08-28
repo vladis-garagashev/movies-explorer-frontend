@@ -51,6 +51,38 @@
 }
 .profile__form-input:focus {
   outline: none;
+  border-bottom: 1px solid #4285F4;
+}
+.profile__form-input_type_error {
+  color: #EE3465;
+  border-bottom: 1px solid #EE3465;
+}
+.profile__form-input_type_error:focus {
+  border-color: #EE3465;
+}
+.profile__form-input_error {
+  margin: 0;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 13px;
+  color: #EE3465;
+}
+.profile__succes-message {
+  margin: 0;
+  margin-bottom: 20px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #4285F4;
+
+}
+.profile__error-message {
+  margin: 0;
+  margin-bottom: 20px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #EE3465;
 }
 .profile__signout {
   text-decoration: none;

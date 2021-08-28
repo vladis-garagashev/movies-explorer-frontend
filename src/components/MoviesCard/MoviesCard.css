@@ -1,7 +1,5 @@
 .movie-card {
   position: relative;
-  display: flex;
-  flex-direction: column;
 }
 .movie-card:hover {
   cursor: pointer;
@@ -14,10 +12,11 @@
   opacity: 1;
   pointer-events: all;
 }
-.movie-card__content {
-  margin-top: 16px;
+.movie-card__link {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  text-decoration: none;
+  color: #fff;
 }
 .movie-card__image {
   width: 100%;
@@ -25,6 +24,11 @@
   object-fit: cover;
   object-position: center;
   border-radius: 6px;
+}
+.movie-card__content {
+  margin-top: 16px;
+  display: flex;
+  justify-content: space-between;
 }
 .movie-card__title {
   margin: 0;

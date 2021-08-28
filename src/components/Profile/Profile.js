@@ -1,15 +1,29 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useFormValidation } from '../../hooks/useForm';
+
+import './Profile.css';
 import Button from '../Button/Button';
 import Header from '../Header/Header';
-import Input from '../Input/Input';
-import './Profile.css'
+import { AppContext } from '../../contexts/AppContext';
 
-function Profile({ isEditing, handleFormEditing, currentUser}) {
-  const { inputValues, handleChange, resetFrom } = useFormValidation();
+function Profile({ isEditing, onUpdateUser, onSignout, handleFormEditing }) {
 
-  const disableInput = isEditing ? false : true;
+  const { isLoading, disableInput, setDisableInput, isSuccess, serverErrorMessage, setServerErrorMessage } = useContext(AppContext);
+  const currentUser = useContext(CurrentUserContext);
+  const { inputValues, handleChange, resetFrom, errors, isValid } = useFormValidation();
+
+  const disabledBtn = (currentUser?.name === inputValues.name && currentUser?.email === inputValues.email) ? false : isValid;
+
+  useEffect(() => {
+    setServerErrorMessage('');
+  }, []);
+
+  useEffect(() => {
+    isEditing ? setDisableInput(false) : setDisableInput(true);
+  }, [isEditing]);
 
   useEffect(() => {
     if (currentUser) {
@@ -21,7 +35,7 @@ function Profile({ isEditing, handleFormEditing, currentUser}) {
   // Обработчик сабмита формы
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    handleFormEditing()
+    onUpdateUser(inputValues);
   };
 
   //-----------------------------------
@@ -30,15 +44,21 @@ function Profile({ isEditing, handleFormEditing, currentUser}) {
       <Header/>
       <main className="content">
         <section className="profile">
-          <h2 className="profile__title">Привет, Владислав!</h2>
-          <form className="profile__form">
+          <h2 className="profile__title">Привет, {currentUser?.name}!</h2>
+          <form
+            className="profile__form"
+            method="POST"
+            onSubmit={handleSubmit}
+            noValidate
+          >
             <section className="profile__form-section">
               <label htmlFor="name" className="profile__form-label">Имя</label>
-              <Input
-                className="profile__form-input"
+              <span className="profile__form-input_error">{errors.name}</span>
+              <input
+                className={`profile__form-input ${errors.name ? "profile__form-input_type_error" : ""}`}
                 type="text"
                 name="name"
-                required={true}
+                required
                 disabled={disableInput}
                 value={inputValues.name}
                 onChange={handleChange}
@@ -47,24 +67,26 @@ function Profile({ isEditing, handleFormEditing, currentUser}) {
 
             <section className="profile__form-section">
               <label htmlFor="email" className="profile__form-label">Почта</label>
-              <Input
-                className="profile__form-input"
+              <span className="profile__form-input_error">{errors.email}</span>
+              <input
+                className={`profile__form-input ${errors.email ? "profile__form-input_type_error" : ""}`}
                 type="email"
                 name="email"
-                required={true}
+                required
                 disabled={disableInput}
                 value={inputValues.email}
                 onChange={handleChange}
               />
             </section>
+           {isSuccess ? <p className="profile__succes-message"> Профиль обновлен.</p>  : <p className="profile__error-message">{serverErrorMessage}</p>}
             {isEditing
             ? (
               <Button
                 type="subbit"
                 className="button button_type_blue"
-                onClick={handleSubmit}
+                disabled={disabledBtn ? false : true}
               >
-                Сохранить
+                {isLoading ? "Сохранение..." : "Сохранить"}
               </Button>
             ) : (
               <>
@@ -75,7 +97,9 @@ function Profile({ isEditing, handleFormEditing, currentUser}) {
                 >
                   Редактировать
                   </Button>
-                <Link className="profile__signout" to="/">Выйти из аккаунта</Link>
+                <Link className="profile__signout" to="/" onClick={onSignout}>
+                  Выйти из аккаунта
+                </Link>
               </>
             )}
           </form>

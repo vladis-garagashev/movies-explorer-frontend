@@ -16,6 +16,9 @@
 .button:hover {
   opacity: .8;
 }
+.button_type_hidden {
+  display: none;
+}
 
 /* -------Кнопка меню------- */
 .button_type_menu {
@@ -126,11 +129,12 @@
   font-weight: 500;
   font-size: 12px;
   line-height: 15px;
+  align-self: center;
 }
 
 /* -------Кнопка сохранить------- */
 .button_type_save-movie {
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
   position: absolute;
   top: 10px;
@@ -142,7 +146,7 @@
   font-weight: 400;
   font-size: 10px;
   line-height: 9px;
-  transition: all .2s linear;
+  transition: opacity .2s linear;
 }
 
 /* -------Кнопка сохраненый------- */
@@ -154,11 +158,12 @@
   height: 21px;
   background: url('../../images/saved__movie-icon.svg') center no-repeat;
   background-size: contain;
+  transition: opacity .2s linear;
 }
 
 /* -------Кнопка удалить------- */
 .button_type_delete-movie {
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
   position: absolute;
   top: 10px;
@@ -167,7 +172,7 @@
   height: 21px;
   background: url('../../images/delete-movie-icon.svg') center no-repeat;
   background-size: contain;
-  transition: all .2s linear;
+  transition: opacity .2s linear;
 }
 
 /* -------Кнопка синий текст------- */
@@ -186,6 +191,15 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 15px;
+}
+/* -------Заблокированная кнопка------- */
+.button_type_disabled {
+  cursor: default;
+  background-color: #F8F8F8;
+  color: #C2C2C2;
+}
+.button_type_disabled:hover {
+  opacity: 1;
 }
 
 /* ----------------------------------- */
@@ -235,6 +249,12 @@
 @media screen and (min-width: 1024px) {
   .button_type_menu {
     display: none;
+  }
+  .button_type_save-movie {
+    opacity: 0;
+  }
+  .button_type_delete-movie {
+    opacity: 0;
   }
   .button_type_load-more {
     width: calc(100% - 140px);

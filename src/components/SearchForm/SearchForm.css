@@ -25,8 +25,9 @@
   border-radius: 50px;
 }
 .search-form__input {
+  box-sizing: border-box;
   margin: 0 9px;
-  padding: 0;
+  padding: 5px;
   flex: 1 0 auto;
   background: transparent;
   border: none;
@@ -36,8 +37,9 @@
   line-height: 18px;
 }
 .search-form__input:focus {
-  outline: 1px solid #3456F3;
-  outline-offset: 10px;
+  outline: none ;
+  border: 1px solid #3456F3;
+  border-radius: 25px;
 }
 .search-form__input::placeholder {
   color: #8B8B8B;
@@ -51,7 +53,12 @@
 .search-form__input::-ms-input-placeholder {
   color: #8B8B8B;
 }
-
+.search-form__input_error {
+  color: #fff;
+  margin: 0;
+  margin-right: 9px;
+  text-align: center;
+}
 @media screen and (min-width: 768px) {
   .search {
     margin-left: 30px;

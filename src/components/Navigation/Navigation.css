@@ -13,10 +13,13 @@
   z-index: 1;
   background: rgba(0, 0, 0, .3);
   opacity: 0;
+  pointer-events: none;
+  cursor: pointer;
   transition: all .2s linear;
 }
 .menu__background_opened {
   opacity: 1;
+  pointer-events: all;
 }
 
 .menu__container {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import './Portfolio.css'
+import './Portfolio.css';
 
 function Portfolio() {
   return (

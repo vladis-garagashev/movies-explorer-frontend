@@ -1,9 +1,33 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useFormValidation } from '../../hooks/useForm';
+import { AppContext } from '../../contexts/AppContext';
 
 import './Login.css'
 import AuthForm from '../AuthForm/AuthForm';
 
-function Login() {
+function Login({ handleLogin }) {
+  const { disableInput, setDisableInput } = useContext(AppContext);
+  const { inputValues, handleChange, resetFrom, errors, isValid } =
+    useFormValidation();
+  //-----------------------------------
+  useEffect(() => {
+    setDisableInput(false);
+  }, [])
+
+  // Сброс полей формы
+  useEffect(() => {
+    resetFrom();
+  }, [resetFrom]);
+
+  //-----------------------------------
+
+  // Обработчик сабмита формы
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleLogin(inputValues);
+  };
+
+  //-----------------------------------
   return (
     <main className="content">
       <section className="login">
@@ -14,7 +38,37 @@ function Login() {
           captionText="Ещё не зарегистрированы?"
           captionLinkText="Регистрация"
           redirectPath="/sign-up"
-        />
+          isValid={isValid}
+          onSubmit={handleSubmit}
+        >
+          <section className="form__section">
+            <label htmlFor="email" className="form__label">E-mail</label>
+            <input
+              className={`form__input ${errors.email ? "form__input_type_error" : ""}`}
+              type="email"
+              name="email"
+              required
+              value={inputValues.email}
+              onChange={handleChange}
+              disabled={disableInput}
+            />
+            <span className="form__input_error" id="email-error">{errors.email}</span>
+          </section>
+
+          <section className="form__section">
+            <label htmlFor="password" className="form__label">Пароль</label>
+            <input
+              className={`form__input ${errors.password ? "form__input_type_error" : ""}`}
+              type="password"
+              name="password"
+              required
+              value={inputValues.password}
+              onChange={handleChange}
+              disabled={disableInput}
+            />
+            <span className="form__input_error" id="password-error">{errors.password}</span>
+          </section>
+        </AuthForm>
       </section>
     </main>
   );

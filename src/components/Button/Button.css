@@ -134,7 +134,7 @@
 
 /* -------Кнопка сохранить------- */
 .button_type_save-movie {
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
   position: absolute;
   top: 10px;
@@ -163,7 +163,7 @@
 
 /* -------Кнопка удалить------- */
 .button_type_delete-movie {
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
   position: absolute;
   top: 10px;
@@ -249,6 +249,12 @@
 @media screen and (min-width: 1024px) {
   .button_type_menu {
     display: none;
+  }
+  .button_type_save-movie {
+    opacity: 0;
+  }
+  .button_type_delete-movie {
+    opacity: 0;
   }
   .button_type_load-more {
     width: calc(100% - 140px);

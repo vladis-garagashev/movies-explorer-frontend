@@ -252,7 +252,7 @@ function App() {
       })
       .finally(() => {
         setIsLoading(false);
-        setDisableInput(true);
+        setDisableInput(false);
       });
   };
 
